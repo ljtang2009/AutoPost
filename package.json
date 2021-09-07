@@ -1,0 +1,19 @@
+{
+  "name": "autopost",
+  "version": "1.0.0",
+  "description": "自动提交内容",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ljtang2009/AutoPost.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ljtang2009/AutoPost/issues"
+  },
+  "homepage": "https://github.com/ljtang2009/AutoPost#readme"
+}
