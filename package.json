@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node src/index.js",
-    "product": "cross-env NODE_ENV=production node src/index.js"
+    "product": "cross-env NODE_ENV=production node src/index.js",
+    "cypress:open": "cypress open"
   },
   "repository": {
     "type": "git",
@@ -19,7 +20,9 @@
   },
   "homepage": "https://github.com/ljtang2009/AutoPost#readme",
   "dependencies": {
+    "@nut-tree/nut-js": "^1.7.0",
+    "clipboardy": "^2.3.0",
     "cross-env": "^7.0.3",
-    "puppeteer": "^10.2.0"
+    "node-notifier": "^10.0.0"
   }
 }
