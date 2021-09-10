@@ -1,7 +1,7 @@
 /*
  * @Author: ho_ho_gl@hotmail.com
  * @Date: 2021-09-07 12:07:26
- * @LastEditTime: 2021-09-10 13:31:54
+ * @LastEditTime: 2021-09-10 22:34:07
  * @LastEditors: ho_ho_gl@hotmail.com
  * @Description:
  * @FilePath: \AutoPost\src\index.js
@@ -14,7 +14,7 @@ const douyinPost = require('./platform/douyin/post');
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 const clipboardy = require('clipboardy');
-const dbDemo = require('./db/demo');
+const dbDemo = require('../db/demo');
 
 (async () => {
   // //切到下一个窗口

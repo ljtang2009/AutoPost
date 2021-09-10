@@ -7,7 +7,7 @@
     "dev": "node src/index.js",
     "product": "cross-env NODE_ENV=production node src/index.js",
     "get-uuid": "node src/getUUID.js",
-    "pull-douyin-user-video": ""
+    "pull-douyin-user-video": "node src/platform/douyin/pull.js"
   },
   "repository": {
     "type": "git",
