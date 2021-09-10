@@ -1,7 +1,7 @@
 /*
  * @Author: ho_ho_gl@hotmail.com
  * @Date: 2021-09-09 16:09:29
- * @LastEditTime: 2021-09-10 00:39:24
+ * @LastEditTime: 2021-09-10 12:52:19
  * @LastEditors: ho_ho_gl@hotmail.com
  * @Description: 抖音
  * @FilePath: \AutoPost\src\platform\douyin\post.js
@@ -17,6 +17,7 @@ const {
   screen,
   centerOf,
 } = require("@nut-tree/nut-js");
+const sleep = require('sleep-promise');
 const clipboardy = require('clipboardy');
 
 //根据用户获取视频列表
@@ -24,35 +25,39 @@ async function getVideoLinkListByUser() {
   //打开新页面
   await keyboardControl.createNewTab();
   //写入地址
-  keyboard.config.autoDelayMs = 0;
-  await keyboard.type('https://www.douyin.com/user/MS4wLjABAAAA8xUmseK9-WQLGOWbjXCpYcJZU0HPGUf9-qOZ1S7oZ0Q');
+  clipboardy.writeSync('https://www.douyin.com/user/MS4wLjABAAAA8xUmseK9-WQLGOWbjXCpYcJZU0HPGUf9-qOZ1S7oZ0Q');
+  await keyboardControl.paste();
   await keyboard.type(Key.Enter);
+
   //鼠标移动
-  mouse.config.mouseSpeed = 4000;
-  await mouse.move(straightTo(new Point(1000, 350)));
-  const logoRegion = await screen.waitFor('assets/images/templates/douyin/douyin-logo-white.png', 10000);
-  if (logoRegion) {
-    await mouse.rightClick();
-    setTimeout(async () => {
-      // await keyboard.type(Key.Down);
-      // keyboard.config.autoDelayMs = 100;
-      await keyboard.type(Key.Down);
-      await keyboard.type(Key.Down);
-      await keyboard.type(Key.Down);
-      await keyboard.type(Key.Down);
-      await keyboard.type(Key.Down);
-      await keyboard.type(Key.Down);
-      await keyboard.type(Key.Enter);
-      console.log(clipboardy.readSync());
-    }, 1000);
-    // const copyLinkButtonRegion = await screen.waitFor('assets/images/templates/browser/chrome-copy-link.png', 1000, {confidence: 0.95});
-    // if (copyLinkButtonRegion) {
-    //   console.log('copyLinkButtonRegion', copyLinkButtonRegion);
-    //   await mouse.move(straightTo(centerOf(copyLinkButtonRegion)));
-    // }
-    // await keyboard.type(Key.Down);
-    // await keyboard.type(Key.Down, Key.Down, Key.Down, Key.Down, Key.Down, Key.Down, Key.Enter);
+  //判断页面是否加载完毕
+  let pageReady = false;
+  try {
+    const logoRegion = await screen.waitFor('assets/images/templates/douyin/douyin-logo-white.png', 5000);
+    pageReady = !!logoRegion;
   }
+  catch {
+    //TODO 记录
+  }
+  if (!pageReady) {
+    return;
+  }
+  let hasQueryAll = false;  //是否已经查询到所有
+  let pageIndex = 0;
+  do {
+    await keyboard.type(Key.End);
+    await sleep(2000);  //TODO 翻页加载时间 要可配置
+    try {
+      const bottomRegion = await screen.find('assets/images/templates/douyin/douyin-bottom.png');
+      hasQueryAll = !!bottomRegion;
+    }
+    catch {
+      pageIndex++;
+      console.log(pageIndex);
+      hasQueryAll = true; //TODO 测试代码
+    }
+  } while (!hasQueryAll);
+  await keyboardControl.save();
 }
 
 module.exports = {
