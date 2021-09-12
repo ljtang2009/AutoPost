@@ -12,6 +12,15 @@
         "<node_internals>/**"
       ],
       "program": "./src/index.js"
+    },
+    {
+      "type": "pwa-node",
+      "request": "launch",
+      "name": "pull-douyin-user-video",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "./src/platform/douyin/pull.js"
     }
   ]
 }
