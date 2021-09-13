@@ -1,7 +1,7 @@
 /*
  * @Author: ho_ho_gl@hotmail.com
  * @Date: 2021-09-11 06:43:49
- * @LastEditTime: 2021-09-12 10:31:13
+ * @LastEditTime: 2021-09-14 00:08:28
  * @LastEditors: ho_ho_gl@hotmail.com
  * @Description: 通用操作
  * @FilePath: \AutoPost\db\common.js
@@ -19,10 +19,10 @@ function getDatabase(option) {
 }
 
 /**
- * 根据columns获取column string
+ * 为查询，根据columns获取column string
  * @param {*} columns 列
  */
-function getColumnStringByColumns(columns) {
+function getColumnStringByColumnsForQuery(columns) {
   let result = '';
   if (columns) {
     for (let column of columns) {
@@ -33,7 +33,55 @@ function getColumnStringByColumns(columns) {
   return result;
 }
 
+/**
+ * 为新增，根据columns获取column string
+ * @param {*} columns 列
+ */
+function getColumnStringByColumnsForAdd(columns) {
+  let result = '';
+  if (columns) {
+    for (let column of columns) {
+      result += `${column.dbColumnName},`;
+    }
+    result = result.substring(0, result.length - 1);
+  }
+  return result;
+}
+
+/**
+ * 为新增的参数，根据columns获取column string
+ * @param {*} columns 入参
+ */
+function getParametersColumnStringByColumnsForAdd(columns) {
+  let result = '';
+  if (columns) {
+    for (let column of columns) {
+      result += `$${column.logicalColumnName},`;
+    }
+    result = result.substring(0, result.length - 1);
+  }
+  return result;
+}
+
+/**
+ * 为新增，根据columns, 数据获取参数
+ * @param {*} columns 列
+ * @param {*} row 数据
+ */
+function getParameterObjectByColumnsForAdd(columns, row) {
+  let result = {};
+  if (columns) {
+    for (let column of columns) {
+      result['$' + column.logicalColumnName] = row && row[column.logicalColumnName] !== undefined ? row[column.logicalColumnName] : null;
+    }
+  }
+  return result;
+}
+
 module.exports = {
   getDatabase,
-  getColumnStringByColumns
+  getColumnStringByColumnsForQuery,
+  getColumnStringByColumnsForAdd,
+  getParametersColumnStringByColumnsForAdd,
+  getParameterObjectByColumnsForAdd,
 }

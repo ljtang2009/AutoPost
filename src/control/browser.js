@@ -1,7 +1,7 @@
 /*
  * @Author: ho_ho_gl@hotmail.com
  * @Date: 2021-09-12 14:51:41
- * @LastEditTime: 2021-09-13 01:17:24
+ * @LastEditTime: 2021-09-13 22:23:05
  * @LastEditors: ho_ho_gl@hotmail.com
  * @Description: 浏览器控制
  * @FilePath: \AutoPost\src\control\browser.js
@@ -97,8 +97,42 @@ function queryByXpath(option) {
   return xNodes;
 }
 
+/**
+ * 切换到浏览器
+ * @param {*} option 入参
+ */
+function switchBrowser(option) {
+  return new Promise(async (resolve, reject) => {
+    let times = 0;
+    let switched = false;
+    do {
+      await keyboardsControl.switchAllWindow();
+      try {
+        const logoRegion = await screen.find('assets/images/templates/browser/chrome-launched-icon.png');
+        switched = !!logoRegion;
+      }
+      catch (e) {
+        times++;
+      }
+    } while (times < (option && option.times ? option.times : 10) && !switched)
+    if (switched) {
+      if (option && option.url) {
+        await keyboardsControl.createNewTab();
+        clipboardy.writeSync(option.url);
+        await keyboardsControl.paste();
+        await keyboard.type(Key.Enter);
+      }
+      resolve();
+    }
+    else {
+      reject('未切换到浏览器');
+    }
+  });
+}
+
 module.exports = {
   launch,
   save,
-  queryByXpath
+  queryByXpath,
+  switchBrowser,
 }

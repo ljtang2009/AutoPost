@@ -1,7 +1,7 @@
 /*
  * @Author: ho_ho_gl@hotmail.com
  * @Date: 2021-09-09 12:20:33
- * @LastEditTime: 2021-09-10 12:24:10
+ * @LastEditTime: 2021-09-13 22:11:46
  * @LastEditors: ho_ho_gl@hotmail.com
  * @Description: 键盘控制
  * @FilePath: \AutoPost\src\control\keyboards.js
@@ -12,9 +12,15 @@ const {
 } = require("@nut-tree/nut-js");
 
 //切到下一个窗口
-async function shiftNextWindow() {
+async function switchNextWindow() {
   await keyboard.pressKey(Key.LeftAlt, Key.Tab);
   await keyboard.releaseKey(Key.LeftAlt, Key.Tab);
+}
+
+//切换所有窗口
+async function switchAllWindow() {
+  await keyboard.pressKey(Key.LeftAlt, Key.Escape);
+  await keyboard.releaseKey(Key.LeftAlt, Key.Escape);
 }
 
 //创建新tab
@@ -35,9 +41,19 @@ async function save() {
   await keyboard.releaseKey(Key.LeftControl, Key.S);
 }
 
+/**
+ * 关闭tab
+ */
+async function closeTab() {
+  await keyboard.pressKey(Key.LeftControl, Key.W);
+  await keyboard.releaseKey(Key.LeftControl, Key.W);
+};
+
 module.exports = {
-  shiftNextWindow,
+  switchNextWindow,
+  switchAllWindow,
   createNewTab,
+  closeTab,
   paste,
   save
 }

@@ -1,7 +1,7 @@
 /*
  * @Author: ho_ho_gl@hotmail.com
  * @Date: 2021-09-11 06:42:15
- * @LastEditTime: 2021-09-12 14:39:01
+ * @LastEditTime: 2021-09-13 23:27:00
  * @LastEditors: ho_ho_gl@hotmail.com
  * @Description: blogOwner操作
  * @FilePath: \AutoPost\db\blogOwner.js
@@ -17,20 +17,20 @@ const columns = {
   platform: {
     dbColumnName: 'platform',
   },
-  url: {
-    dbColumnName: 'url',
+  originalId: {
+    dbColumnName: 'original_id',
+    logicalColumnName: 'originalId',
   },
-  remark: {
-    dbColumnName: '_remark',
-    logicalColumnName: 'remark'
+  comment: {
+    dbColumnName: 'comment',
   },
 }
 
 const defaultColumns = [
   columns.userId,
   columns.platform,
-  columns.url,
-  columns.remark,
+  columns.originalId,
+  columns.comment,
 ]
 
 /**
@@ -40,7 +40,7 @@ const defaultColumns = [
 function queryByPlatform(option) {
   return new Promise((resolve, reject) => {
     let currentColumns = option && option.columns ? option.columns : defaultColumns;
-    let columnString = dbCommon.getColumnStringByColumns(currentColumns);
+    let columnString = dbCommon.getColumnStringByColumnsForQuery(currentColumns);
     let sql = `SELECT ${columnString} FROM blog_owner WHERE platform = $platform`;
     const db = dbCommon.getDatabase();
     db.all(
@@ -56,10 +56,11 @@ function queryByPlatform(option) {
           resolve(row);
         }
       });
+    db.close();
   })
 }
 
 module.exports = {
+  columns,
   queryByPlatform,
-  columns
 }
